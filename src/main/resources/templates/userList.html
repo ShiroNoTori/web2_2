@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Index</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div style="width: 80%;" align="center">
+    <a href="/user/add">Add new user</a>
+    <br>
+
+    <table border="1" width="80%">
+        <tbody>
+        <tr>
+            <td width="10%">id</td>
+            <td width="23%">login</td>
+            <td width="23%">name</td>
+            <td width="23%">password</td>
+            <td width="10%">update</td>
+            <td width="10%">delete</td>
+        </tr>
+
+        <tr th:each="user : ${userList}">
+            <td th:text="${user.getId()}"></td>
+            <td th:text="${user.getLogin()}"></td>
+            <td th:text="${user.getName()}"></td>
+            <td th:text="${user.getPassword()}"></td>
+            <td>
+                <a th:href="@{'/user/update/' + ${user.getId()}}">
+                    <input type="button" value="update" style="width: 100%; height: 100%;">
+                </a>
+            </td>
+            <td>
+                <a th:href="@{'/user/delete/' + ${user.getId()}}">
+                    <input type="button" value="delete" style="width: 100%; height: 100%;">
+                </a>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
