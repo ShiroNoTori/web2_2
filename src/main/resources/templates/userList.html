@@ -24,7 +24,7 @@
             <td th:text="${user.getId()}"></td>
             <td th:text="${user.getLogin()}"></td>
             <td th:text="${user.getName()}"></td>
-            <td>***</td>
+            <td th:text="${user.getPassword()}"></td>
             <td>
                 <a th:href="@{'/admin/update/' + ${user.getId()}}">
                     <input type="button" value="update" style="width: 100%; height: 100%;">

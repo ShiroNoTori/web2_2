@@ -3,8 +3,8 @@ package ru.vladislav.preproject.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import ru.vladislav.preproject.model.User;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.vladislav.preproject.repository.UserRepository;
 
 import java.security.Principal;

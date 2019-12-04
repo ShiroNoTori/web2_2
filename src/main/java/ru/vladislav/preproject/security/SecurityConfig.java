@@ -1,4 +1,4 @@
-package ru.vladislav.preproject.config;
+package ru.vladislav.preproject.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.vladislav.preproject.repository.UserRepository;
 import ru.vladislav.preproject.service.UserDetailsServiceImpl;
 
 @Configuration
@@ -18,6 +17,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsServiceImpl userService;
+
+    @Autowired
+    private SuccessHandler successHandler;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -39,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/doLogin")
                 .usernameParameter("login")
                 .passwordParameter("password")
-                .defaultSuccessUrl("/user", true)
+                .successHandler(successHandler)
                 .failureUrl("/login?error=true")
                 .and()
                 .logout()
