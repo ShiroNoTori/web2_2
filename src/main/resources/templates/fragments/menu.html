@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu</title>
+</head>
+<body>
+
+    <div class="list-group list-group-flush">
+        <a th:class="(${#httpServletRequest.requestURL.toString().contains('/admin/all')}  ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action')" class="list-group-item list-group-item-action active" href="/admin/all" >Admin</a>
+        <a th:class="(${#httpServletRequest.requestURL.toString().contains('/user')} ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action')" class="list-group-item list-group-item-action" href="/user" >User</a>
+    </div>
+
+</body>
+</html>

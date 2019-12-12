@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Entity
 public class User implements UserDetails {
@@ -116,6 +117,12 @@ public class User implements UserDetails {
 
     public Collection<Role> getRoles() {
         return roles;
+    }
+
+    public String getRolesString() {
+        return roles.stream()
+                .map(Role::getName)
+                .collect(Collectors.joining(", "));
     }
 
     public void setRoles(Collection<Role> roles) {

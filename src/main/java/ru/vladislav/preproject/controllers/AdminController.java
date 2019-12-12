@@ -12,6 +12,8 @@ import ru.vladislav.preproject.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
+import java.util.function.Function;
 
 @Controller
 @RequestMapping("/admin")
@@ -64,26 +66,25 @@ public class AdminController {
         return "redirect:/admin/all";
     }
 
-    @GetMapping("/update/{id}")
+    /*@GetMapping("/update/{id}")
     public String update(@PathVariable Integer id, Model model) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
         model.addAttribute("user", user);
         return "userUpdate";
-    }
+    }*/
 
     @PostMapping("/update")
     public String update(@RequestParam(name = "id") Integer id,
+                         @RequestParam(name = "login") String login,
                          @RequestParam(name = "name") String name,
                          @RequestParam(name = "password") String password) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
 
+        user.setLogin(login);
         user.setName(name);
-        if (!password.isEmpty()) {
-            user.setPassword(encoder.encode(password));
-        }
-
+        user.setPassword(encoder.encode(password));
         userRepository.save(user);
         return "redirect:/admin/all";
     }
