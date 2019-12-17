@@ -78,13 +78,25 @@ public class AdminController {
     public String update(@RequestParam(name = "id") Integer id,
                          @RequestParam(name = "login") String login,
                          @RequestParam(name = "name") String name,
-                         @RequestParam(name = "password") String password) {
+                         @RequestParam(name = "password") String password,
+                         @RequestParam(name = "roles") String roles) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
 
         user.setLogin(login);
         user.setName(name);
-        user.setPassword(encoder.encode(password));
+
+        if (!user.getPassword().equals(password)) {
+            user.setPassword(encoder.encode(password));
+        }
+
+        List<Role> roleList = new ArrayList<Role>();
+        if (roles.contains("ADMIN")) {
+            roleList.add(roleRepository.findByName("ROLE_ADMIN"));
+        }
+        roleList.add(roleRepository.findByName("ROLE_USER"));
+        user.setRoles(roleList);
+
         userRepository.save(user);
         return "redirect:/admin/all";
     }

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Menu</title>
@@ -7,7 +9,7 @@
 <body>
 
     <div class="list-group list-group-flush">
-        <a th:class="(${#httpServletRequest.requestURL.toString().contains('/admin/all')}  ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action')" class="list-group-item list-group-item-action active" href="/admin/all" >Admin</a>
+        <a sec:authorize="hasRole('ADMIN')" th:class="(${#httpServletRequest.requestURL.toString().contains('/admin/all')}  ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action')" class="list-group-item list-group-item-action active" href="/admin/all" >Admin</a>
         <a th:class="(${#httpServletRequest.requestURL.toString().contains('/user')} ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action')" class="list-group-item list-group-item-action" href="/user" >User</a>
     </div>
 
