@@ -1,5 +1,6 @@
 package ru.vladislav.preproject.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -119,6 +120,7 @@ public class User implements UserDetails {
         return roles;
     }
 
+    @JsonIgnore
     public String getRolesString() {
         return roles.stream()
                 .map(Role::getName)
