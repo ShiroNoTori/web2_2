@@ -32,7 +32,7 @@ public class RestApiController {
         this.encoder = encoder;
     }
 
-    @PostMapping("/user/add")
+    /*@PostMapping("/user/add")
     @ResponseBody
     public ResponseEntity<User> addUser(@RequestParam(name = "login") String login,
                                         @RequestParam(name = "name") String name,
@@ -47,23 +47,16 @@ public class RestApiController {
         User user = new User(login, name, encoder.encode(password), roles);
         userRepository.save(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
-    }
+    }*/
 
-    /*@RequestMapping(value = "/user/add", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<User> addUser(User user,
-                                        @RequestParam(name = "role") String roleName) {
-        List<Role> roles = new ArrayList<Role>();
-        roles.add(roleRepository.findByName(roleName));
-        if (roleName.contains("ADMIN")) {
-            roles.add(roleRepository.findByName("ROLE_USER"));
-        }
-
-        user.setRoles(roles);
+    @RequestMapping(value = "/user/add" , method = RequestMethod.POST)
+    public @ResponseBody User addUser(@RequestBody User user,
+                                      @RequestParam(name = "roles") String roleName) {
+        user = setRoles(user, roleName);
 
         userRepository.save(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
-    }*/
+        return user;
+    }
 
     @GetMapping("/user/{id}")
     @ResponseBody
@@ -81,31 +74,16 @@ public class RestApiController {
     }
 
     @PostMapping("/update")
-    @ResponseBody
-    public ResponseEntity<User> update(@RequestParam(name = "id") Integer id,
-                                       @RequestParam(name = "login") String login,
-                                       @RequestParam(name = "name") String name,
-                                       @RequestParam(name = "password") String password,
-                                       @RequestParam(name = "roles") String roles) {
-        User user = userRepository.findById(id)
+    public @ResponseBody User update(@RequestBody User user,
+                                     @RequestParam(name = "roles") String roleName) {
+        int id = user.getId();
+        userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-
-        user.setLogin(login);
-        user.setName(name);
-
-        if (!user.getPassword().equals(password)) {
-            user.setPassword(encoder.encode(password));
-        }
-
-        List<Role> roleList = new ArrayList<Role>();
-        if (roles.contains("ADMIN")) {
-            roleList.add(roleRepository.findByName("ROLE_ADMIN"));
-        }
-        roleList.add(roleRepository.findByName("ROLE_USER"));
-        user.setRoles(roleList);
+        
+        user = setRoles(user, roleName);
 
         userRepository.save(user);
-        return new ResponseEntity<User>(user, HttpStatus.OK);
+        return user;
     }
 
     @GetMapping("/delete/{id}")
@@ -117,5 +95,15 @@ public class RestApiController {
         userRepository.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private User setRoles(User user, String roleName) {
+        List<Role> roleList = new ArrayList<Role>();
+        if (roleName.contains("ADMIN")) {
+            roleList.add(roleRepository.findByName("ROLE_ADMIN"));
+        }
+        roleList.add(roleRepository.findByName("ROLE_USER"));
+        user.setRoles(roleList);
+        return user;
     }
 }
